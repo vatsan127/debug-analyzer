@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: debug-analyzer
+
+  datasource:
+    driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
+    url: jdbc:clickhouse://${CLICKHOUSE_HOST:localhost}:8123/debug_pipeline?compress=false
+    username: ${CLICKHOUSE_USER:analyzer}
+    password: ${CLICKHOUSE_PASSWORD:password}
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: 6379
+      password: ${REDIS_PASSWORD:password}
+
+debug-analyzer:
+  gemini:
+    api-key: ${GEMINI_API_KEY:localhost}
+    models:
+      log-summary: gemini-3.5-flash-lite
+      code-agent: gemini-3.8-flash
+      debug-agent: gemini-4-argon
+      fallback: gemini-4-carbon
+
+log-velocity:
+  enabled: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    general-topic: app-logs
+    error-topic: error-logs
+    registry-topic: app-registry
+    warmup-timeout: 10s
